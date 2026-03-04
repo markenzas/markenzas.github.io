@@ -28,9 +28,9 @@ const SEAFARERS_3_4: BoardConfig = {
   extended: false,
   rowLayout: [4, 5, 6, 7, 6, 5, 4],
   resources: {
-    wood: 4, brick: 3, sheep: 4, wheat: 4, ore: 3, desert: 1, sea: 15, gold: 2,
+    wood: 4, brick: 3, sheep: 4, wheat: 4, ore: 3, desert: 1, sea: 16, gold: 2,
   },
-  numberTokens: [2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12, 3, 5, 9, 10],
+  numberTokens: [2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12, 3, 5],
 };
 
 const SEAFARERS_5_6: BoardConfig = {
@@ -38,12 +38,12 @@ const SEAFARERS_5_6: BoardConfig = {
   extended: true,
   rowLayout: [5, 6, 7, 8, 7, 6, 5],
   resources: {
-    wood: 6, brick: 5, sheep: 6, wheat: 6, ore: 5, desert: 2, sea: 22, gold: 3,
+    wood: 6, brick: 5, sheep: 6, wheat: 6, ore: 5, desert: 2, sea: 11, gold: 3,
   },
   numberTokens: [
     2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6,
     8, 8, 8, 9, 9, 9, 10, 10, 10, 11, 11, 11, 12, 12,
-    3, 4, 5, 9, 10, 11,
+    3, 4, 5,
   ],
 };
 
