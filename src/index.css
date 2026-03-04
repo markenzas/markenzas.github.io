@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+@theme {
+  --color-sand: #D7C3A5;
+  --color-walnut: #72523A;
+  --color-stone: #8B806E;
+  --color-caramel: #BE946C;
+  --color-forest: #1C2524;
+  --color-sand-light: #E8DCCC;
+  --color-forest-light: #2A3635;
+  --color-parchment: #F2E8D8;
+  --color-ember: #D4864A;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Outfit', system-ui, sans-serif;
+  --animate-score-pop: score-pop 0.3s ease-out;
+  --animate-dice-tumble: dice-tumble 0.8s ease-out;
+  --animate-fade-up: fade-up 0.5s ease-out both;
+}
+
+@keyframes score-pop {
+  0% { transform: scale(1.3); opacity: 0.6; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes dice-tumble {
+  0% { transform: rotateX(0deg) rotateY(0deg) scale(1); }
+  25% { transform: rotateX(180deg) rotateY(90deg) scale(1.1); }
+  50% { transform: rotateX(360deg) rotateY(180deg) scale(1.05); }
+  75% { transform: rotateX(540deg) rotateY(270deg) scale(1.02); }
+  100% { transform: rotateX(720deg) rotateY(360deg) scale(1); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Base styles */
+html {
+  font-family: var(--font-body);
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-parchment);
+  color: var(--color-forest);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Parchment texture overlay on body */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* Heading typography */
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+}
+
+/* Custom selection */
+::selection {
+  background: var(--color-caramel);
+  color: white;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-sand-light);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-stone);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-walnut);
+}
+
+/* Staggered entrance for page sections */
+.stagger-in > * {
+  animation: fade-up 0.5s ease-out both;
+}
+.stagger-in > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-in > *:nth-child(2) { animation-delay: 0.12s; }
+.stagger-in > *:nth-child(3) { animation-delay: 0.19s; }
+.stagger-in > *:nth-child(4) { animation-delay: 0.26s; }
+.stagger-in > *:nth-child(5) { animation-delay: 0.33s; }
