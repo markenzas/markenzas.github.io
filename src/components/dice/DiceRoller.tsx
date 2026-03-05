@@ -1,4 +1,5 @@
-import { useState, useCallback, forwardRef } from 'react';
+import { useState, useCallback } from 'react';
+
 import { Die } from './Die';
 import { RollHistory } from './RollHistory';
 import type { DiceType } from './Die';
@@ -11,7 +12,7 @@ const DICE_MAX: Record<DiceType, number> = {
   d4: 4, d6: 6, d8: 8, d10: 10, d12: 12, d20: 20,
 };
 
-export const DiceRoller = forwardRef<HTMLButtonElement>(function DiceRoller(_props, ref) {
+export const DiceRoller = () => {
   const [diceType, setDiceType] = useState<DiceType>('d6');
   const [diceCount, setDiceCount] = useState(2);
   const [results, setResults] = useState<number[]>([]);
@@ -90,7 +91,6 @@ export const DiceRoller = forwardRef<HTMLButtonElement>(function DiceRoller(_pro
 
         {/* Roll button */}
         <button
-          ref={ref}
           onClick={roll}
           disabled={rolling}
           className={`
@@ -132,4 +132,4 @@ export const DiceRoller = forwardRef<HTMLButtonElement>(function DiceRoller(_pro
       <RollHistory entries={history} onClear={() => setHistory([])} />
     </div>
   );
-});
+}

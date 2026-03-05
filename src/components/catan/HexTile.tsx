@@ -1,6 +1,6 @@
-import type { HexTile as HexTileType, Resource } from '../../lib/catan/types';
-import { hexPoints } from '../../lib/catan/hex-utils';
-import { RESOURCE_COLORS } from '../../lib/catan/configs';
+import type { HexTile as HexTileType, Resource } from '@/types/catan';
+import { hexPoints } from '@/lib/catan/hex-utils';
+import { RESOURCE_COLORS } from '@/lib/catan/configs';
 import { NumberToken } from './NumberToken';
 
 const RESOURCE_EMOJI: Record<Resource, string> = {
@@ -85,7 +85,7 @@ export function HexTile({ tile, x, y, size }: HexTileProps) {
         textAnchor="middle"
         dominantBaseline="central"
         fontSize={emojiSize}
-        style={{ pointerEvents: 'none' }}
+        style={{ pointerEvents: 'none', userSelect: 'none' }}
       >
         {emoji}
       </text>

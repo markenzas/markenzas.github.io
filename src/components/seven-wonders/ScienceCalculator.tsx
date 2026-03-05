@@ -12,6 +12,8 @@ const INITIAL_SYMBOLS: SymbolCounter[] = [
   { emoji: '📜', label: 'Tablet', count: 0 },
 ];
 
+const MAX_SINGLE_CARD_AMOUNT = 6;
+
 export function ScienceCalculator() {
   const [symbols, setSymbols] = useState<SymbolCounter[]>(INITIAL_SYMBOLS);
 
@@ -45,10 +47,11 @@ export function ScienceCalculator() {
               key={symbol.label}
               className="flex items-center justify-between bg-sand-light rounded-xl p-4"
             >
-              <div className="flex items-center gap-3 min-w-[100px]">
+              <div className="flex items-center gap-3 min-w-25">
                 <span className="text-4xl" role="img" aria-label={symbol.label}>
                   {symbol.emoji}
                 </span>
+
                 <span className="text-walnut font-semibold text-sm">
                   {symbol.label}
                 </span>
@@ -68,17 +71,21 @@ export function ScienceCalculator() {
                 >
                   −
                 </button>
+
                 <span className="text-2xl font-bold text-forest w-8 text-center tabular-nums">
                   {symbol.count}
                 </span>
+
                 <button
                   type="button"
                   onClick={() => updateCount(index, 1)}
                   className="w-11 h-11 rounded-full bg-caramel text-white font-bold text-xl
                     flex items-center justify-center
                     active:scale-95 transition-all duration-150
+                    disabled:opacity-30 disabled:cursor-not-allowed
                     hover:bg-walnut cursor-pointer"
                   aria-label={`Increase ${symbol.label}`}
+                  disabled={symbol.count >= MAX_SINGLE_CARD_AMOUNT}
                 >
                   +
                 </button>
@@ -120,7 +127,7 @@ export function ScienceCalculator() {
               Complete sets: {completeSets} × 7
             </span>
             <span className="font-semibold text-forest transition-all duration-300">
-              = {setPts} pts
+              {setPts} pts
             </span>
           </div>
 
@@ -166,10 +173,11 @@ function ScoreLine({
   return (
     <div className="flex justify-between items-center text-sm text-stone">
       <span>
-        {emoji} {label}: {count}² 
+        {emoji} {label}: {count}²
       </span>
+
       <span className="font-semibold text-forest transition-all duration-300">
-        = {points} pts
+        {points} pts
       </span>
     </div>
   );

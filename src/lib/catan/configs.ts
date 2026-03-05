@@ -1,7 +1,8 @@
-import type { BoardConfig, Resource } from './types';
+import { EXPANSIONS } from '@/utils/constants';
+import type { BoardConfig, ExpansionType, Resource } from '@/types/catan';
 
 const BASE_3_4: BoardConfig = {
-  expansion: 'base',
+  expansion: EXPANSIONS.base,
   extended: false,
   rowLayout: [3, 4, 5, 4, 3],
   resources: {
@@ -11,7 +12,7 @@ const BASE_3_4: BoardConfig = {
 };
 
 const BASE_5_6: BoardConfig = {
-  expansion: 'base',
+  expansion: EXPANSIONS.base,
   extended: true,
   rowLayout: [3, 4, 5, 6, 5, 4, 3],
   resources: {
@@ -24,7 +25,7 @@ const BASE_5_6: BoardConfig = {
 };
 
 const SEAFARERS_3_4: BoardConfig = {
-  expansion: 'seafarers',
+  expansion: EXPANSIONS.seafarers,
   extended: false,
   rowLayout: [4, 5, 6, 7, 6, 5, 4],
   resources: {
@@ -34,7 +35,7 @@ const SEAFARERS_3_4: BoardConfig = {
 };
 
 const SEAFARERS_5_6: BoardConfig = {
-  expansion: 'seafarers',
+  expansion: EXPANSIONS.seafarers,
   extended: true,
   rowLayout: [5, 6, 7, 8, 7, 6, 5],
   resources: {
@@ -47,8 +48,8 @@ const SEAFARERS_5_6: BoardConfig = {
   ],
 };
 
-export function getConfig(expansion: 'base' | 'seafarers', extended: boolean): BoardConfig {
-  if (expansion === 'seafarers') return extended ? SEAFARERS_5_6 : SEAFARERS_3_4;
+export function getConfig(expansion: ExpansionType, extended: boolean): BoardConfig {
+  if (expansion === EXPANSIONS.seafarers) return extended ? SEAFARERS_5_6 : SEAFARERS_3_4;
   return extended ? BASE_5_6 : BASE_3_4;
 }
 

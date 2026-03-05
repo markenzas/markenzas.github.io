@@ -1,4 +1,4 @@
-import type { AxialCoord } from './types';
+import type { AxialCoord } from '@/types/catan';
 
 export function generateGridPositions(rowLayout: number[]): AxialCoord[] {
   const positions: AxialCoord[] = [];

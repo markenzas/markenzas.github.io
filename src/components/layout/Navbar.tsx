@@ -1,4 +1,4 @@
-import { Link } from '../../router';
+import { Link } from '@/router';
 
 const NAV_ITEMS = [
   { to: '/catan' as const, label: 'Catan', icon: '🏝️' },

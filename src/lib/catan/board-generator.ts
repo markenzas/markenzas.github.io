@@ -1,4 +1,4 @@
-import type { HexTile, BoardConfig, ConstraintOptions, Resource } from './types';
+import type { HexTile, BoardConfig, ConstraintOptions, Resource } from '@/types/catan';
 import { generateGridPositions, getNeighborCoords, coordKey } from './hex-utils';
 
 function shuffle<T>(arr: T[]): T[] {
@@ -35,6 +35,7 @@ function assignNumberTokens(tiles: HexTile[], tokens: number[]): void {
 
 function checkConstraints(tiles: HexTile[], constraints: ConstraintOptions): boolean {
   const tileMap = new Map<string, HexTile>();
+
   for (const tile of tiles) {
     tileMap.set(coordKey(tile.coord), tile);
   }
@@ -48,7 +49,9 @@ function checkConstraints(tiles: HexTile[], constraints: ConstraintOptions): boo
       if (!neighbor || neighbor.resource === 'sea') continue;
 
       if (!constraints.sameResourceCanTouch) {
-        if (tile.resource !== 'desert' && tile.resource === neighbor.resource) return false;
+        if (tile.resource !== 'desert' && tile.resource === neighbor.resource) {
+          return false;
+        }
       }
 
       if (tile.numberToken != null && neighbor.numberToken != null) {
@@ -95,7 +98,6 @@ export function generateBoard(config: BoardConfig, constraints: ConstraintOption
     }
   }
 
-  // Fallback: relax all constraints and return best effort
   const resourcePool = shuffle(buildResourcePool(config));
   const tiles: HexTile[] = positions.map((coord, i) => ({
     coord,

@@ -1,4 +1,5 @@
-import type { ExpansionType, ConstraintOptions } from '../../lib/catan/types';
+import type { ExpansionType, ConstraintOptions } from '@/types/catan';
+import { EXPANSIONS } from '@/utils/constants';
 
 interface BoardControlsProps {
   expansion: ExpansionType;
@@ -27,14 +28,12 @@ function Toggle({
         role="switch"
         aria-checked={checked}
         onClick={() => onChange(!checked)}
-        className={`relative inline-flex h-6 w-11 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 ${
-          checked ? 'bg-caramel' : 'bg-stone/40'
-        }`}
+        className={`relative cursor-pointer inline-flex h-6 w-11 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 ${checked ? 'bg-caramel' : 'bg-stone/40'
+          }`}
       >
         <span
-          className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow-sm ring-0 transition-transform duration-200 ${
-            checked ? 'translate-x-5' : 'translate-x-0'
-          }`}
+          className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow-sm ring-0 transition-transform duration-200 
+            ${checked ? 'translate-x-5' : 'translate-x-0'}`}
         />
       </button>
     </label>
@@ -62,25 +61,19 @@ export function BoardControls({
           Expansion
         </h3>
         <div className="flex rounded-xl overflow-hidden border border-caramel/40">
-          {(['base', 'seafarers'] as const).map((exp) => (
+          {(Object.values(EXPANSIONS).map((exp) => (
             <button
               key={exp}
               onClick={() => onExpansionChange(exp)}
-              className={`flex-1 py-2 px-3 text-sm font-medium transition-colors ${
-                expansion === exp
-                  ? 'bg-caramel text-white'
-                  : 'bg-sand-light text-walnut hover:bg-sand'
-              }`}
+              className={`flex-1 py-2 px-3 text-sm font-medium cursor-pointer transition-colors ${expansion === exp
+                ? 'bg-caramel text-white'
+                : 'bg-sand-light text-walnut hover:bg-sand'
+                }`}
             >
-              {exp === 'base' ? 'Base Game' : 'Seafarers'}
+              {exp === EXPANSIONS.base ? 'Base Game' : 'Seafarers'}
             </button>
-          ))}
+          )))}
         </div>
-        {expansion === 'base' && (
-          <p className="text-xs text-stone mt-2 italic">
-            🏰 Cities &amp; Knights uses the same board layout — it only adds gameplay mechanics
-          </p>
-        )}
       </div>
 
       {/* 5-6 Player toggle */}
@@ -124,12 +117,11 @@ export function BoardControls({
         </div>
       </div>
 
-      {/* Shuffle button */}
       <button
         onClick={onShuffle}
         className="w-full py-3 px-4 rounded-xl bg-caramel hover:bg-walnut text-white font-semibold text-base shadow-sm transition-colors duration-200 cursor-pointer flex items-center justify-center gap-2"
       >
-        <span>🔀</span> Shuffle Board
+        Shuffle Board
       </button>
     </div>
   );

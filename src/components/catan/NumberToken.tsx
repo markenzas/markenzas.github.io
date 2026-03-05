@@ -7,7 +7,7 @@ export function NumberToken({ value, size }: NumberTokenProps) {
   const isHighProb = value === 6 || value === 8;
   const dots = 6 - Math.abs(7 - value);
   const radius = size * 0.34;
-  const fontSize = size * 0.28;
+  const fontSize = size * 0.32;
   const dotRadius = size * 0.025;
   const dotY = size * 0.12;
 
@@ -22,9 +22,11 @@ export function NumberToken({ value, size }: NumberTokenProps) {
         fontWeight={isHighProb ? 'bold' : '600'}
         fill={isHighProb ? '#DC2626' : '#3B2714'}
         fontFamily="serif"
+        style={{ userSelect: 'none' }}
       >
         {value}
       </text>
+
       <g transform={`translate(0, ${dotY})`}>
         {Array.from({ length: dots }, (_, i) => {
           const totalWidth = (dots - 1) * dotRadius * 3;

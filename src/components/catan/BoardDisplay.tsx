@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
-import type { HexTile as HexTileType } from '../../lib/catan/types';
-import { axialToPixel } from '../../lib/catan/hex-utils';
+
+import type { HexTile as HexTileType } from '@/types/catan';
+import { axialToPixel } from '@/lib/catan/hex-utils';
 import { HexTile } from './HexTile';
 
 interface BoardDisplayProps {
@@ -35,7 +36,7 @@ export function BoardDisplay({ tiles }: BoardDisplayProps) {
   }, [tiles]);
 
   return (
-    <div className="flex items-center justify-center w-full h-full min-h-[400px]">
+    <div className="flex items-center justify-center w-full h-full min-h-100">
       <svg
         viewBox={viewBox}
         className="w-full h-full max-h-[75vh]"

@@ -8,17 +8,19 @@ import {
 } from '@tanstack/react-router';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
-import { CatanPage } from './pages/CatanPage';
-import { SevenWondersPage } from './pages/SevenWondersPage';
-import { DicePage } from './pages/DicePage';
+import CatanPage from './pages/CatanPage';
+import SevenWondersPage from './pages/SevenWondersPage';
+import DicePage from './pages/DicePage';
 
 const rootRoute = createRootRoute({
   component: () => (
     <div className="min-h-screen flex flex-col bg-parchment text-forest font-body">
       <Navbar />
-      <main className="flex-1">
+
+      <main>
         <Outlet />
       </main>
+
       <Footer />
     </div>
   ),

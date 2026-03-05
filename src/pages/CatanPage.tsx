@@ -1,13 +1,15 @@
 import { useState, useCallback, useMemo } from 'react';
-import type { ExpansionType, ConstraintOptions, HexTile } from '../lib/catan/types';
-import { DEFAULT_CONSTRAINTS } from '../lib/catan/types';
-import { getConfig } from '../lib/catan/configs';
-import { generateBoard } from '../lib/catan/board-generator';
-import { BoardDisplay } from '../components/catan/BoardDisplay';
-import { BoardControls } from '../components/catan/BoardControls';
 
-export function CatanPage() {
-  const [expansion, setExpansion] = useState<ExpansionType>('base');
+import type { ExpansionType, ConstraintOptions, HexTile } from '@/types/catan';
+import { DEFAULT_CONSTRAINTS } from '@/types/catan';
+import { getConfig } from '@/lib/catan/configs';
+import { generateBoard } from '@/lib/catan/board-generator';
+import { BoardDisplay } from '@/components/catan/BoardDisplay';
+import { BoardControls } from '@/components/catan/BoardControls';
+import { EXPANSIONS } from '@/utils/constants';
+
+export default function CatanPage() {
+  const [expansion, setExpansion] = useState<ExpansionType>(EXPANSIONS.base);
   const [extended, setExtended] = useState(false);
   const [constraints, setConstraints] = useState<ConstraintOptions>({ ...DEFAULT_CONSTRAINTS });
   const [shuffleKey, setShuffleKey] = useState(0);
@@ -15,7 +17,6 @@ export function CatanPage() {
   const tiles: HexTile[] = useMemo(() => {
     const config = getConfig(expansion, extended);
     return generateBoard(config, constraints);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [expansion, extended, constraints, shuffleKey]);
 
   const handleShuffle = useCallback(() => {
@@ -37,13 +38,6 @@ export function CatanPage() {
   return (
     <div className="bg-parchment min-h-[calc(100vh-3.5rem)]">
       <div className="max-w-7xl mx-auto px-4 py-8 stagger-in">
-        <h1 className="text-3xl md:text-4xl font-bold text-walnut text-center mb-2 font-display">
-          Catan Board Generator
-        </h1>
-        <p className="text-center text-stone text-sm mb-8">
-          Generate balanced random boards for your next game night
-        </p>
-
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Controls */}
           <div className="lg:w-72 shrink-0">

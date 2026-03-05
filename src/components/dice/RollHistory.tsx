@@ -18,7 +18,7 @@ export function RollHistory({ entries, onClear }: RollHistoryProps) {
   if (entries.length === 0) {
     return (
       <div className="bg-sand-light/60 rounded-2xl p-6 shadow-[0_4px_24px_rgba(114,82,58,0.08)] border border-sand/80 text-center text-stone backdrop-blur-sm">
-        <p className="italic">No rolls yet — give it a try!</p>
+        <p className="italic">No rolls yet.</p>
       </div>
     );
   }
