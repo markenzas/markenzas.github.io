@@ -1,11 +1,8 @@
-import type { ExpansionType, ConstraintOptions } from '@/types/catan';
-import { EXPANSIONS } from '@/utils/constants';
+import type { ConstraintOptions } from '@/types/catan';
 
 interface BoardControlsProps {
-  expansion: ExpansionType;
   extended: boolean;
   constraints: ConstraintOptions;
-  onExpansionChange: (expansion: ExpansionType) => void;
   onExtendedChange: (extended: boolean) => void;
   onConstraintsChange: (constraints: ConstraintOptions) => void;
   onShuffle: () => void;
@@ -41,10 +38,8 @@ function Toggle({
 }
 
 export function BoardControls({
-  expansion,
   extended,
   constraints,
-  onExpansionChange,
   onExtendedChange,
   onConstraintsChange,
   onShuffle,
@@ -55,27 +50,6 @@ export function BoardControls({
 
   return (
     <div className="bg-sand-light/60 rounded-2xl shadow-[0_4px_24px_rgba(114,82,58,0.08)] p-5 space-y-5 border border-sand/80 backdrop-blur-sm">
-      {/* Expansion selector */}
-      <div>
-        <h3 className="text-sm font-semibold text-walnut mb-2 uppercase tracking-wide">
-          Expansion
-        </h3>
-        <div className="flex rounded-xl overflow-hidden border border-caramel/40">
-          {(Object.values(EXPANSIONS).map((exp) => (
-            <button
-              key={exp}
-              onClick={() => onExpansionChange(exp)}
-              className={`flex-1 py-2 px-3 text-sm font-medium cursor-pointer transition-colors ${expansion === exp
-                ? 'bg-caramel text-white'
-                : 'bg-sand-light text-walnut hover:bg-sand'
-                }`}
-            >
-              {exp === EXPANSIONS.base ? 'Base Game' : 'Seafarers'}
-            </button>
-          )))}
-        </div>
-      </div>
-
       {/* 5-6 Player toggle */}
       <div>
         <h3 className="text-sm font-semibold text-walnut mb-2 uppercase tracking-wide">

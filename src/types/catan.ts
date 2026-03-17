@@ -1,4 +1,17 @@
-export type Resource = 'wood' | 'brick' | 'sheep' | 'wheat' | 'ore' | 'desert' | 'sea' | 'gold';
+export type Resource = 'wood' | 'brick' | 'sheep' | 'wheat' | 'ore' | 'desert';
+
+export type PortResource = Exclude<Resource, 'desert'>;
+export type PortType = 'generic' | PortResource;
+
+export interface PortPosition {
+  hexCoord: AxialCoord;
+  edge: number; // 0-5
+}
+
+export interface Port {
+  position: PortPosition;
+  type: PortType;
+}
 
 export interface AxialCoord {
   q: number;
@@ -11,10 +24,7 @@ export interface HexTile {
   numberToken: number | null;
 }
 
-export type ExpansionType = 'base' | 'seafarers';
-
 export interface BoardConfig {
-  expansion: ExpansionType;
   extended: boolean; // 5-6 player
   rowLayout: number[];
   resources: Record<Resource, number>;

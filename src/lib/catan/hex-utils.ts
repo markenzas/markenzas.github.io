@@ -51,3 +51,24 @@ export function hexPoints(size: number): string {
   }
   return points.join(' ');
 }
+
+/** Compute pixel positions for a port on a given hex edge */
+export function getPortPixelPositions(
+  hexCoord: AxialCoord,
+  edge: number,
+  size: number,
+): { portX: number; portY: number; v1x: number; v1y: number; v2x: number; v2y: number; angle: number } {
+  const { x: cx, y: cy } = axialToPixel(hexCoord, size);
+  const a1 = (Math.PI / 180) * (60 * edge);
+  const a2 = (Math.PI / 180) * (60 * ((edge + 1) % 6));
+  const v1x = cx + size * Math.cos(a1);
+  const v1y = cy + size * Math.sin(a1);
+  const v2x = cx + size * Math.cos(a2);
+  const v2y = cy + size * Math.sin(a2);
+  const edgeAngle = (Math.PI / 180) * (60 * edge + 30);
+  const offset = size * 1.55;
+  const portX = cx + offset * Math.cos(edgeAngle);
+  const portY = cy + offset * Math.sin(edgeAngle);
+  const angleDeg = 60 * edge + 30;
+  return { portX, portY, v1x, v1y, v2x, v2y, angle: angleDeg };
+}

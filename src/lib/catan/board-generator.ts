@@ -1,4 +1,4 @@
-import type { HexTile, BoardConfig, ConstraintOptions, Resource } from '@/types/catan';
+import type { HexTile, BoardConfig, ConstraintOptions, Resource, Port, PortType, PortPosition } from '@/types/catan';
 import { generateGridPositions, getNeighborCoords, coordKey } from './hex-utils';
 
 function shuffle<T>(arr: T[]): T[] {
@@ -12,7 +12,7 @@ function shuffle<T>(arr: T[]): T[] {
 
 function buildResourcePool(config: BoardConfig): Resource[] {
   const pool: Resource[] = [];
-  const resourceTypes: Resource[] = ['wood', 'brick', 'sheep', 'wheat', 'ore', 'desert', 'sea', 'gold'];
+  const resourceTypes: Resource[] = ['wood', 'brick', 'sheep', 'wheat', 'ore', 'desert'];
   for (const r of resourceTypes) {
     for (let i = 0; i < config.resources[r]; i++) {
       pool.push(r);
@@ -25,7 +25,7 @@ function assignNumberTokens(tiles: HexTile[], tokens: number[]): void {
   const shuffledTokens = shuffle(tokens);
   let tokenIdx = 0;
   for (const tile of tiles) {
-    if (tile.resource === 'desert' || tile.resource === 'sea') {
+    if (tile.resource === 'desert') {
       tile.numberToken = null;
     } else {
       tile.numberToken = shuffledTokens[tokenIdx++] ?? null;
@@ -33,45 +33,54 @@ function assignNumberTokens(tiles: HexTile[], tokens: number[]): void {
   }
 }
 
-function checkConstraints(tiles: HexTile[], constraints: ConstraintOptions): boolean {
-  const tileMap = new Map<string, HexTile>();
+function checkResourceConstraints(tiles: HexTile[], constraints: ConstraintOptions): boolean {
+  if (constraints.sameResourceCanTouch) return true;
 
+  const tileMap = new Map<string, HexTile>();
   for (const tile of tiles) {
     tileMap.set(coordKey(tile.coord), tile);
   }
 
   for (const tile of tiles) {
-    if (tile.resource === 'sea') continue;
-    const neighbors = getNeighborCoords(tile.coord);
-
-    for (const nc of neighbors) {
+    if (tile.resource === 'desert') continue;
+    for (const nc of getNeighborCoords(tile.coord)) {
       const neighbor = tileMap.get(coordKey(nc));
-      if (!neighbor || neighbor.resource === 'sea') continue;
+      if (!neighbor || neighbor.resource === 'desert') continue;
+      if (tile.resource === neighbor.resource) return false;
+    }
+  }
 
-      if (!constraints.sameResourceCanTouch) {
-        if (tile.resource !== 'desert' && tile.resource === neighbor.resource) {
-          return false;
-        }
+  return true;
+}
+
+function checkNumberConstraints(tiles: HexTile[], constraints: ConstraintOptions): boolean {
+  const tileMap = new Map<string, HexTile>();
+  for (const tile of tiles) {
+    tileMap.set(coordKey(tile.coord), tile);
+  }
+
+  for (const tile of tiles) {
+    if (tile.numberToken == null) continue;
+    for (const nc of getNeighborCoords(tile.coord)) {
+      const neighbor = tileMap.get(coordKey(nc));
+      if (!neighbor || neighbor.numberToken == null) continue;
+
+      if (!constraints.sixEightCanTouch) {
+        if (
+          (tile.numberToken === 6 || tile.numberToken === 8) &&
+          (neighbor.numberToken === 6 || neighbor.numberToken === 8)
+        ) return false;
       }
 
-      if (tile.numberToken != null && neighbor.numberToken != null) {
-        if (!constraints.sixEightCanTouch) {
-          if (
-            (tile.numberToken === 6 || tile.numberToken === 8) &&
-            (neighbor.numberToken === 6 || neighbor.numberToken === 8)
-          ) return false;
-        }
+      if (!constraints.twoTwelveCanTouch) {
+        if (
+          (tile.numberToken === 2 || tile.numberToken === 12) &&
+          (neighbor.numberToken === 2 || neighbor.numberToken === 12)
+        ) return false;
+      }
 
-        if (!constraints.twoTwelveCanTouch) {
-          if (
-            (tile.numberToken === 2 || tile.numberToken === 12) &&
-            (neighbor.numberToken === 2 || neighbor.numberToken === 12)
-          ) return false;
-        }
-
-        if (!constraints.sameNumberCanTouch) {
-          if (tile.numberToken === neighbor.numberToken) return false;
-        }
+      if (!constraints.sameNumberCanTouch) {
+        if (tile.numberToken === neighbor.numberToken) return false;
       }
     }
   }
@@ -81,23 +90,39 @@ function checkConstraints(tiles: HexTile[], constraints: ConstraintOptions): boo
 
 export function generateBoard(config: BoardConfig, constraints: ConstraintOptions): HexTile[] {
   const positions = generateGridPositions(config.rowLayout);
-  const maxRetries = 1000;
+  const outerRetries = 10;
+  const resourceRetries = 500;
+  const numberRetries = 500;
 
-  for (let attempt = 0; attempt < maxRetries; attempt++) {
-    const resourcePool = shuffle(buildResourcePool(config));
-    const tiles: HexTile[] = positions.map((coord, i) => ({
-      coord,
-      resource: resourcePool[i],
-      numberToken: null,
-    }));
+  for (let outer = 0; outer < outerRetries; outer++) {
+    // Phase 1: find a valid resource layout
+    let resourceTiles: HexTile[] | null = null;
+    for (let r = 0; r < resourceRetries; r++) {
+      const resourcePool = shuffle(buildResourcePool(config));
+      const tiles: HexTile[] = positions.map((coord, i) => ({
+        coord,
+        resource: resourcePool[i],
+        numberToken: null,
+      }));
+      if (checkResourceConstraints(tiles, constraints)) {
+        resourceTiles = tiles;
+        break;
+      }
+    }
 
-    assignNumberTokens(tiles, [...config.numberTokens]);
+    if (!resourceTiles) continue;
 
-    if (checkConstraints(tiles, constraints)) {
-      return tiles;
+    // Phase 2: find valid number token placement on the resource layout
+    for (let n = 0; n < numberRetries; n++) {
+      const tiles = resourceTiles.map((t) => ({ ...t }));
+      assignNumberTokens(tiles, [...config.numberTokens]);
+      if (checkNumberConstraints(tiles, constraints)) {
+        return tiles;
+      }
     }
   }
 
+  // Fallback: return an unconstrained board
   const resourcePool = shuffle(buildResourcePool(config));
   const tiles: HexTile[] = positions.map((coord, i) => ({
     coord,
@@ -106,4 +131,12 @@ export function generateBoard(config: BoardConfig, constraints: ConstraintOption
   }));
   assignNumberTokens(tiles, [...config.numberTokens]);
   return tiles;
+}
+
+export function generatePorts(positions: PortPosition[], types: PortType[]): Port[] {
+  const shuffledTypes = shuffle(types);
+  return positions.map((position, i) => ({
+    position,
+    type: shuffledTypes[i],
+  }));
 }
