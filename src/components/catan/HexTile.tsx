@@ -1,14 +1,14 @@
-import type { HexTile as HexTileType, Resource } from '@/types/catan';
-import { hexPoints } from '@/lib/catan/hex-utils';
-import { NumberToken } from './NumberToken';
+import { hexPoints } from "@/lib/catan/hex-utils";
+import type { HexTile as HexTileType, Resource } from "@/types/catan";
+import { NumberToken } from "./NumberToken";
 
 const RESOURCE_IMAGES: Record<Resource, string> = {
-  wood: 'wood.png',
-  brick: 'brick.png',
-  sheep: 'sheep.png',
-  wheat: 'wheat.png',
-  ore: 'ore.png',
-  desert: 'desert.png',
+  wood: "catan/tiles/wood.webp",
+  brick: "catan/tiles/brick.webp",
+  sheep: "catan/tiles/sheep.webp",
+  wheat: "catan/tiles/wheat.webp",
+  ore: "catan/tiles/ore.webp",
+  desert: "catan/tiles/desert.webp",
 };
 
 interface HexTileProps {
@@ -22,7 +22,7 @@ export function HexTile({ tile, x, y, size }: HexTileProps) {
   const points = hexPoints(size);
   const hasNumber = tile.numberToken != null;
   const clipId = `hex-clip-${tile.coord.q}-${tile.coord.r}`;
-  const imgSrc = `${import.meta.env.BASE_URL}${RESOURCE_IMAGES[tile.resource]}`;
+  const imgSrc = `${RESOURCE_IMAGES[tile.resource]}`;
 
   return (
     <g transform={`translate(${x}, ${y})`} className="hex-tile">
@@ -35,10 +35,10 @@ export function HexTile({ tile, x, y, size }: HexTileProps) {
       {/* Resource image clipped to hex */}
       <image
         href={imgSrc}
-        x={-size}
-        y={-size * 0.87}
-        width={size * 2}
-        height={size * 1.74}
+        x={-size * 0.87}
+        y={-size}
+        width={size * 1.74}
+        height={size * 2}
         clipPath={`url(#${clipId})`}
         preserveAspectRatio="xMidYMid slice"
       />

@@ -1,18 +1,22 @@
-import { Link } from '@/router';
+import { Link } from "@/router";
 
 const NAV_ITEMS = [
-  { to: '/catan' as const, label: 'Catan', icon: '🏝️' },
-  { to: '/7-wonders' as const, label: '7 Wonders', icon: '🏛️' },
-  { to: '/dice' as const, label: 'Dice', icon: '🎲' },
+  { to: "/catan" as const, label: "Catan", image: "logos/catan.webp" },
+  {
+    to: "/7-wonders" as const,
+    label: "7 Wonders",
+    image: "logos/7_wonders.webp",
+  },
+  { to: "/dice" as const, label: "Dice", icon: "🎲" },
 ];
 
 export function Navbar() {
   return (
-    <nav className="bg-forest/95 backdrop-blur-sm text-sand px-4 py-0 shadow-[0_2px_20px_rgba(28,37,36,0.3)] sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto flex items-center justify-between h-14">
+    <nav className="bg-forest/95 text-sand sticky top-0 z-50 px-4 py-0 shadow-[0_2px_20px_rgba(28,37,36,0.3)] backdrop-blur-sm">
+      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between">
         <Link
           to="/"
-          className="font-display text-xl font-bold tracking-tight text-caramel hover:text-sand transition-colors duration-300 flex items-center gap-2"
+          className="font-display text-caramel hover:text-sand flex items-center gap-2 text-xl font-bold tracking-tight transition-colors duration-300"
         >
           <span className="text-2xl">♟</span>
           <span className="hidden sm:inline">Board Game Helpers</span>
@@ -23,15 +27,18 @@ export function Navbar() {
             <Link
               key={item.to}
               to={item.to}
-              className="relative px-3 py-2 rounded-lg text-sm font-medium text-sand/70 hover:text-sand transition-all duration-200 group"
+              className="text-sand/70 hover:bg-sand group relative flex items-center rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 select-none"
               activeProps={{
                 className:
-                  'relative px-3 py-2 rounded-lg text-sm font-medium text-caramel transition-all duration-200 group',
+                  "relative px-3 py-2 rounded-lg text-sm outline outline-sand font-medium text-caramel transition-all duration-200 group",
               }}
             >
-              <span className="mr-1.5">{item.icon}</span>
-              <span className="hidden sm:inline">{item.label}</span>
-              <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-caramel rounded-full transition-all duration-300 w-0 group-[.active]:w-2/3" />
+              {item.image && <img src={item.image} height="52" width="52" />}
+              {item.icon && (
+                <span className="mr-1.5">
+                  {item.icon} {item.label}
+                </span>
+              )}
             </Link>
           ))}
         </div>

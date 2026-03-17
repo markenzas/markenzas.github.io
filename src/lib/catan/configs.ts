@@ -1,4 +1,4 @@
-import type { BoardConfig, Resource, PortPosition, PortType } from '@/types/catan';
+import type { BoardConfig, Resource, Port } from '@/types/catan';
 
 const BASE_3_4: BoardConfig = {
   extended: false,
@@ -43,46 +43,34 @@ export const RESOURCE_LABELS: Record<Resource, string> = {
   desert: 'Desert',
 };
 
-// 3-4 player: 9 ports (4 generic + 5 resource)
-export const BASE_3_4_PORT_POSITIONS: PortPosition[] = [
-  { hexCoord: { q: 0, r: -2 }, edge: 4 },
-  { hexCoord: { q: 2, r: -2 }, edge: 4 },
-  { hexCoord: { q: 2, r: -1 }, edge: 5 },
-  { hexCoord: { q: 2, r: 0 }, edge: 0 },
-  { hexCoord: { q: 1, r: 1 }, edge: 1 },
-  { hexCoord: { q: -1, r: 2 }, edge: 1 },
-  { hexCoord: { q: -2, r: 2 }, edge: 2 },
-  { hexCoord: { q: -2, r: 0 }, edge: 2 },
-  { hexCoord: { q: -1, r: -1 }, edge: 3 },
+// 3-4 player: 9 fixed ports matching the standard Catan board (clockwise from top)
+const BASE_3_4_PORTS: Port[] = [
+  { position: { hexCoord: { q: 1, r: -2 }, edge: 4 }, type: 'generic' },
+  { position: { hexCoord: { q: 2, r: -2 }, edge: 5 }, type: 'generic' },
+  { position: { hexCoord: { q: -1, r: -1 }, edge: 4 }, type: 'sheep' },
+  { position: { hexCoord: { q: 2, r: -1 }, edge: 0 }, type: 'brick' },
+  { position: { hexCoord: { q: -2, r: 0 }, edge: 3 }, type: 'generic' },
+  { position: { hexCoord: { q: -2, r: 1 }, edge: 2 }, type: 'ore' },
+  { position: { hexCoord: { q: 1, r: 1 }, edge: 0 }, type: 'wood' },
+  { position: { hexCoord: { q: -1, r: 2 }, edge: 2 }, type: 'wheat' },
+  { position: { hexCoord: { q: 0, r: 2 }, edge: 1 }, type: 'generic' },
 ];
 
-export const BASE_3_4_PORT_TYPES: PortType[] = [
-  'generic', 'generic', 'generic', 'generic',
-  'wood', 'brick', 'sheep', 'wheat', 'ore',
+// 5-6 player: 11 fixed ports (clockwise from top-left)
+const BASE_5_6_PORTS: Port[] = [
+  { position: { hexCoord: { q: 0, r: -3 }, edge: 4 }, type: 'generic' },
+  { position: { hexCoord: { q: 1, r: -3 }, edge: 5 }, type: 'wheat' },
+  { position: { hexCoord: { q: 2, r: -3 }, edge: 0 }, type: 'generic' },
+  { position: { hexCoord: { q: 2, r: -1 }, edge: 0 }, type: 'ore' },
+  { position: { hexCoord: { q: 1, r: 1 }, edge: 0 }, type: 'generic' },
+  { position: { hexCoord: { q: 0, r: 2 }, edge: 1 }, type: 'wood' },
+  { position: { hexCoord: { q: -1, r: 3 }, edge: 2 }, type: 'generic' },
+  { position: { hexCoord: { q: -3, r: 3 }, edge: 1 }, type: 'brick' },
+  { position: { hexCoord: { q: -3, r: 2 }, edge: 3 }, type: 'generic' },
+  { position: { hexCoord: { q: -3, r: 0 }, edge: 3 }, type: 'sheep' },
+  { position: { hexCoord: { q: -2, r: -1 }, edge: 4 }, type: 'generic' },
 ];
 
-// 5-6 player: 11 ports (5 generic + 6 resource)
-export const BASE_5_6_PORT_POSITIONS: PortPosition[] = [
-  { hexCoord: { q: 0, r: -3 }, edge: 4 },
-  { hexCoord: { q: 1, r: -3 }, edge: 5 },
-  { hexCoord: { q: 2, r: -2 }, edge: 5 },
-  { hexCoord: { q: 2, r: -1 }, edge: 0 },
-  { hexCoord: { q: 1, r: 1 }, edge: 0 },
-  { hexCoord: { q: 0, r: 2 }, edge: 1 },
-  { hexCoord: { q: -2, r: 3 }, edge: 1 },
-  { hexCoord: { q: -3, r: 3 }, edge: 2 },
-  { hexCoord: { q: -3, r: 1 }, edge: 2 },
-  { hexCoord: { q: -3, r: 0 }, edge: 3 },
-  { hexCoord: { q: -1, r: -2 }, edge: 3 },
-];
-
-export const BASE_5_6_PORT_TYPES: PortType[] = [
-  'generic', 'generic', 'generic', 'generic', 'generic',
-  'wood', 'brick', 'sheep', 'wheat', 'ore', 'wood',
-];
-
-export function getPortConfig(extended: boolean): { positions: PortPosition[]; types: PortType[] } {
-  return extended
-    ? { positions: BASE_5_6_PORT_POSITIONS, types: BASE_5_6_PORT_TYPES }
-    : { positions: BASE_3_4_PORT_POSITIONS, types: BASE_3_4_PORT_TYPES };
+export function getPortConfig(extended: boolean): Port[] {
+  return extended ? BASE_5_6_PORTS : BASE_3_4_PORTS;
 }

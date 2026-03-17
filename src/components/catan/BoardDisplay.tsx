@@ -13,7 +13,7 @@ interface BoardDisplayProps {
 
 const HEX_SIZE = 50;
 
-export function BoardDisplay({ tiles, ports, extended = false }: BoardDisplayProps) {
+export function BoardDisplay({ tiles, ports }: BoardDisplayProps) {
   const { viewBox, positions, portPositions, bounds } = useMemo(() => {
     const pos = tiles.map((tile) => ({
       tile,
@@ -52,49 +52,33 @@ export function BoardDisplay({ tiles, ports, extended = false }: BoardDisplayPro
     };
   }, [tiles, ports]);
 
-  const bgImgSrc = `${import.meta.env.BASE_URL}base-background.png`;
-
   return (
     <div
       className="flex items-center justify-center w-full h-full min-h-100"
-      style={extended ? {
+      style={{
         background: 'radial-gradient(ellipse at center, #3B82F6 0%, #2563EB 40%, #1D4ED8 70%, #1E3A5F 100%)',
         backgroundSize: 'cover',
         borderRadius: '1rem',
-      } : undefined}
+      }}
     >
       <svg
         viewBox={viewBox}
         className="w-full h-full max-h-[75vh]"
         preserveAspectRatio="xMidYMid meet"
       >
-        {/* Board background */}
-        {!extended && (
-          <image
-            href={bgImgSrc}
-            x={bounds.minX}
-            y={bounds.minY}
-            width={bounds.w}
-            height={bounds.h}
-            preserveAspectRatio="xMidYMid slice"
-          />
-        )}
-        {extended && (
-          <>
-            <defs>
-              <radialGradient id="ocean-gradient" cx="50%" cy="50%" r="60%">
-                <stop offset="0%" stopColor="#3B82F6" />
-                <stop offset="50%" stopColor="#2563EB" />
-                <stop offset="100%" stopColor="#1D4ED8" />
-              </radialGradient>
-              <pattern id="wave-pattern" width="40" height="20" patternUnits="userSpaceOnUse" patternTransform="rotate(-15)">
-                <path d="M0 10 Q10 0 20 10 Q30 20 40 10" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="1.5" />
-              </pattern>
-            </defs>
-            <rect x={bounds.minX} y={bounds.minY} width={bounds.w} height={bounds.h} fill="url(#ocean-gradient)" rx="8" />
-            <rect x={bounds.minX} y={bounds.minY} width={bounds.w} height={bounds.h} fill="url(#wave-pattern)" rx="8" />
-          </>
-        )}
+        {/* Ocean background */}
+        <defs>
+          <radialGradient id="ocean-gradient" cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stopColor="#3B82F6" />
+            <stop offset="50%" stopColor="#2563EB" />
+            <stop offset="100%" stopColor="#1D4ED8" />
+          </radialGradient>
+          <pattern id="wave-pattern" width="40" height="20" patternUnits="userSpaceOnUse" patternTransform="rotate(-15)">
+            <path d="M0 10 Q10 0 20 10 Q30 20 40 10" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="1.5" />
+          </pattern>
+        </defs>
+        <rect x={bounds.minX} y={bounds.minY} width={bounds.w} height={bounds.h} fill="url(#ocean-gradient)" rx="8" />
+        <rect x={bounds.minX} y={bounds.minY} width={bounds.w} height={bounds.h} fill="url(#wave-pattern)" rx="8" />
 
         {positions.map(({ tile, x, y }) => (
           <HexTile

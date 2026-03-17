@@ -4,7 +4,7 @@ import {
   createRootRoute,
   Outlet,
   Link,
-  createHashHistory,
+  createBrowserHistory,
 } from '@tanstack/react-router';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
@@ -57,11 +57,11 @@ const routeTree = rootRoute.addChildren([
   diceRoute,
 ]);
 
-const hashHistory = createHashHistory();
+const browserHistory = createBrowserHistory();
 
 export const router = createRouter({
   routeTree,
-  history: hashHistory,
+  history: browserHistory,
 });
 
 declare module '@tanstack/react-router' {

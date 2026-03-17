@@ -7,22 +7,27 @@ export function NumberToken({ value, size }: NumberTokenProps) {
   const isHighProb = value === 6 || value === 8;
   const dots = 6 - Math.abs(7 - value);
   const radius = size * 0.34;
-  const fontSize = size * 0.32;
+  const fontSize = size * 0.36;
   const dotRadius = size * 0.025;
   const dotY = size * 0.12;
 
   return (
     <g>
-      <circle r={radius} fill="#FFF8E7" stroke="#8B7355" strokeWidth={size * 0.02} />
+      <circle
+        r={radius}
+        fill="#FFF8E7"
+        stroke="#8B7355"
+        strokeWidth={size * 0.02}
+      />
       <text
-        y={-size * 0.02}
+        y={-size * 0.08}
         textAnchor="middle"
         dominantBaseline="central"
         fontSize={fontSize}
-        fontWeight={isHighProb ? 'bold' : '600'}
-        fill={isHighProb ? '#DC2626' : '#3B2714'}
+        fontWeight={isHighProb ? "bold" : "600"}
+        fill={isHighProb ? "#DC2626" : "#3B2714"}
         fontFamily="serif"
-        style={{ userSelect: 'none' }}
+        style={{ userSelect: "none" }}
       >
         {value}
       </text>
@@ -37,7 +42,7 @@ export function NumberToken({ value, size }: NumberTokenProps) {
               cx={x}
               cy={0}
               r={dotRadius}
-              fill={isHighProb ? '#DC2626' : '#3B2714'}
+              fill={isHighProb ? "#DC2626" : "#3B2714"}
             />
           );
         })}
